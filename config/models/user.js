@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
        required : true,
        unique : true
     },
+    picture : {
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
@@ -31,7 +35,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     
-})
+} , {timestamps : true})
 
 userSchema.pre('save' , async function(next){
     if(this.isModified('password')){

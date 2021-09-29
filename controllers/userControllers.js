@@ -2,7 +2,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../config/models/user.js");
 const bcrypt = require("bcrypt")
 
+
 const registerUser = async (req, res) => {
+    const picture = (req.file) ? req.file.filename : null;
     const { name, phone, email, username, password, cfpassword } = req.body;
 
     if (!name || !email || !password || !username || !cfpassword || !phone) {
@@ -19,10 +21,10 @@ const registerUser = async (req, res) => {
             res.status(422).json({ error: "Password not matching" });
         }
         else {
-            const user = new User({ name, phone, email, username, password, cfpassword });
+            const user = new User({ name, phone, email, username, picture, password, cfpassword });
             await user.save();
 
-            res.status(201).json({ message: "User Registered Succesfully", user })
+            res.status(201).json({ message: "User Registered Succesfully" })
         }
 
     } catch (error) {

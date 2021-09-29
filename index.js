@@ -11,6 +11,7 @@ const URL = "http://localhost:8000/"
 
 connectMongo();
 
+app.use('/uploads', express.static('uploads'));
 app.use(cors());
 app.use(express.json());
 

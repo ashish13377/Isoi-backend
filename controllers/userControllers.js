@@ -52,7 +52,7 @@ const loginUser = async (req, res) => {
             } else {
                 userLogin.password = undefined;
                 userLogin.cfpassword = undefined;
-                const token = jwt.sign({ _id: userLogin._id }, "thisisisoistudentchapterofhitkkolkata");
+                const token = jwt.sign({ _id: userLogin._id }, process.env.JWT_TOKEN);
                 res.status(200).json({ message: "User Login Succesfully!", userLogin, token });
             }
         } else {

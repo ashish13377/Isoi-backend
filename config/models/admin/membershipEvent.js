@@ -15,33 +15,36 @@ const membershipSchema = new mongoose.Schema({
         // required: true
     },
     eventDate: {
-        type : String,
-        required : true,
+        type: String,
+        required: true,
     },
     eventTime: {
-        type : String,
-        required : true,
+        type: String,
+        required: true,
     },
     venue: {
-        type : String,
-        required : true,
+        type: String,
+        required: true,
     },
     contactName: {
-        type : String,
-        required : true,
+        type: String,
+        required: true,
     },
     contactEmail: {
-        type : String,
-        required : true,
+        type: String,
+        required: true,
     },
     contactPhone: {
-        type : Number,
-        required : true,
+        type: Number,
+        required: true,
     },
     contactDesignation: {
-        type : String,
-        required : true,
+        type: String,
+        required: true,
     },
+    participants: {
+        participant: []
+    }
 }, { timestamps: true })
 
 

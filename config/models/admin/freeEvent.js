@@ -42,6 +42,9 @@ const freeEventSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    participants : {
+        participant : []
+    }
 }, { timestamps: true })
 
 

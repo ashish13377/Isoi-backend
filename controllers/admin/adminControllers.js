@@ -33,11 +33,11 @@ const registerUser = async (req, res) => {
 
 
 const loginUser = async (req, res) => {
-    const { username, password } = req.body;
 
+    const { username, password } = req.body;
     try {
         if (!username || !password) {
-            res.status(422).json({ error: "Please fill all fields provided!" })
+            res.status(422).json({ error: "Plz Enter all filed" });
         }
 
         const userLogin = await Admin.findOne({ username: username });
@@ -55,10 +55,10 @@ const loginUser = async (req, res) => {
         } else {
             res.status(422).json({ error: "Invalid Credentials" });
         }
-
     } catch (error) {
-        res.status(422).json(error)
+        res.status(422).json({ error });
     }
+
 }
 
 const membershipEvent = async (req, res) => {
@@ -71,17 +71,17 @@ const membershipEvent = async (req, res) => {
     try {
         if (!eventName || !eventDescription || !eventDate || !eventTime || !venue || !contactName || !contactEmail || !contactPhone || !contactDesignation) {
             res.status(422).json({ error: "Plz Enter all Field Provided" })
-        }else{
-            const mEvenet = new MemberShipEvent({ eventName, eventDescription,eventPoster, eventDate, eventTime, venue, contactName, contactEmail, contactPhone, contactDesignation})
+        } else {
+            const mEvenet = new MemberShipEvent({ eventName, eventDescription, eventPoster, eventDate, eventTime, venue, contactName, contactEmail, contactPhone, contactDesignation })
             await mEvenet.save();
-            res.status(200).json({message : "Event Created succesfully!"});
+            res.status(200).json({ message: "Event Created succesfully!" });
         }
     } catch (error) {
 
     }
 }
 
-const freeEvent = async (req , res) => {
+const freeEvent = async (req, res) => {
     const eventPoster = (req.file) ? req.file.filename : null;
 
     const { eventName, eventDescription, eventDate, eventTime, venue, contactName, contactEmail, contactPhone, contactDesignation } = req.body;
@@ -91,24 +91,24 @@ const freeEvent = async (req , res) => {
     try {
         if (!eventName || !eventDescription || !eventDate || !eventTime || !venue || !contactName || !contactEmail || !contactPhone || !contactDesignation) {
             res.status(422).json({ error: "Plz Enter all Field Provided" })
-        }else{
-            const mEvenet = new FreeEvent({ eventName, eventDescription,eventPoster, eventDate, eventTime, venue, contactName, contactEmail, contactPhone, contactDesignation})
+        } else {
+            const mEvenet = new FreeEvent({ eventName, eventDescription, eventPoster, eventDate, eventTime, venue, contactName, contactEmail, contactPhone, contactDesignation })
             await mEvenet.save();
-            res.status(200).json({message : "Event Created succesfully!"});
+            res.status(200).json({ message: "Event Created succesfully!" });
         }
     } catch (error) {
 
     }
 }
 
-const getFreeEvents = async (req,res) => {
+const getFreeEvents = async (req, res) => {
     const fEvent = await FreeEvent.find()
     res.status(200).json(fEvent);
 }
 
-const getMembershipEvents = async (req,res) => {
+const getMembershipEvents = async (req, res) => {
     const mEvent = await MemberShipEvent.find()
     res.status(200).json(mEvent);
 }
 
-module.exports = { registerUser, loginUser, membershipEvent , freeEvent , getFreeEvents , getMembershipEvents };
+module.exports = { registerUser, loginUser, membershipEvent, freeEvent, getFreeEvents, getMembershipEvents };

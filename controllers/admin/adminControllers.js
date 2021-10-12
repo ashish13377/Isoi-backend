@@ -74,7 +74,7 @@ const membershipEvent = async (req, res) => {
         } else {
             const mEvenet = new MemberShipEvent({ eventName, eventDescription, eventPoster, eventDate, eventTime, venue, contactName, contactEmail, contactPhone, contactDesignation })
             await mEvenet.save();
-            res.status(200).json({ message: "Event Created succesfully!" });
+            res.status(201).json({ message: "Event Created succesfully!" });
         }
     } catch (error) {
 
@@ -94,7 +94,7 @@ const freeEvent = async (req, res) => {
         } else {
             const mEvenet = new FreeEvent({ eventName, eventDescription, eventPoster, eventDate, eventTime, venue, contactName, contactEmail, contactPhone, contactDesignation })
             await mEvenet.save();
-            res.status(200).json({ message: "Event Created succesfully!" });
+            res.status(201).json({ message: "Event Created succesfully!" });
         }
     } catch (error) {
 

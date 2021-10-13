@@ -8,8 +8,8 @@ router.route('/register').post(registerUser);
 router.route('/login').post(loginUser);
 router.route("/membershipevent").post(isAdmin , posterMulter , membershipEvent)
 router.route("/free-event").post(isAdmin, posterMulter , freeEvent)
-router.route("/allfree-event").get(isAdmin, getFreeEvents)
-router.route("/allmembershipevent").get(isAdmin,getMembershipEvents)
+router.route("/allfree-event").get(getFreeEvents)
+router.route("/allmembershipevent").get(getMembershipEvents)
 
 
 module.exports = router;

@@ -5,6 +5,7 @@ const dotenv = require('dotenv').config()
 
 const userRoutes = require("./routes/userRoutes.js")
 const adminRoutes = require("./routes/admin/adminRoutes.js")
+const memeberShipRoute = require("./routes/memeberShipRoute.js")
 const connectMongo = require("./config/db/db.js")
 
 const PORT = process.env.PORT || 8000;
@@ -23,6 +24,7 @@ app.get("/" , (req,res) => {
 
 app.use("/api/users" , userRoutes);
 app.use("/api/admin" , adminRoutes);
+app.use("/api/membership", memeberShipRoute);
 
 app.listen(PORT , () => {
    console.log(`Server Listening on ${URL}`);

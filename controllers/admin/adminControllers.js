@@ -115,7 +115,7 @@ const getFreeEvenetsById = async (req, res) => {
     try {
         const fevents = await FreeEvent.findById(req.params.id);
         if (fevents) {
-            res.json(fevents);
+            res.status(200).json(fevents);
         } else {
             res.status(404).json({ message: "Event not found" })
         }

@@ -111,4 +111,29 @@ const getMembershipEvents = async (req, res) => {
     res.status(200).json(mEvent);
 }
 
-module.exports = { registerUser, loginUser, membershipEvent, freeEvent, getFreeEvents, getMembershipEvents };
+const getFreeEvenetsById = async (req, res) => {
+    try {
+        const fevents = await FreeEvent.findById(req.params.id);
+        if (fevents) {
+            res.json(fevents);
+        } else {
+            res.status(404).json({ message: "Event not found" })
+        }
+    } catch (error) {
+        res.json(error)
+    }
+}
+const getMemberShipEvenetsById = async (req, res) => {
+    try {
+        const mevents = await MemberShipEvent.findById(req.params.id);
+        if (mevents) {
+            res.json(mevents);
+        } else {
+            res.status(404).json({ message: "Event not found" })
+        }
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+module.exports = { registerUser, loginUser, membershipEvent, freeEvent, getFreeEvents, getMembershipEvents , getFreeEvenetsById , getMemberShipEvenetsById };

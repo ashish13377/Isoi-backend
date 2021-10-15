@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { registerUser , loginUser , membershipEvent , freeEvent , getFreeEvents , getMembershipEvents} = require("../../controllers/admin/adminControllers.js")
+const { registerUser , loginUser , membershipEvent , freeEvent , getFreeEvents , getMembershipEvents , getFreeEvenetsById , getMemberShipEvenetsById} = require("../../controllers/admin/adminControllers.js")
 const posterMulter = require("../../middlewares/posterUpload.js");
 const { isAdmin } = require("../../middlewares/isAdmin.js");
 
@@ -10,6 +10,8 @@ router.route("/membershipevent").post(isAdmin , posterMulter , membershipEvent)
 router.route("/free-event").post(isAdmin, posterMulter , freeEvent)
 router.route("/allfree-event").get(getFreeEvents)
 router.route("/allmembershipevent").get(getMembershipEvents)
+router.route("/freeevent/:id").get(getFreeEvenetsById)
+router.route("/paidevent/:id").get(getMemberShipEvenetsById)
 
 
 module.exports = router;

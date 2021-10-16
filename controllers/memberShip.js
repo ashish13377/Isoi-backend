@@ -3,6 +3,7 @@ const Razorpay = require("razorpay")
 const shortid = require("shortid");
 const crypto = require("crypto")
 const MemberShip = require("../config/models/membership/membership.js")
+const PayStats = require("../config/models/membership/paymentStats")
 
 const razorpay = new Razorpay({
     key_id: "rzp_test_AV21XwOeQmdM3Y",
@@ -84,12 +85,19 @@ const membershipVerification = (req, res) => {
 
 
 
-const getMemberShipDetails = async (req, res) => {
+const verifyPayment = async (req, res) => {
 
     try {
+        const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
 
-        const statment = await MemberShip.find({ email: req.user.email })
-        res.status(200).json(statment);
+        generated_signature = hmac_sha256(razorpay_order_id + "|" + razorpay_payment_id, "Cz9OJthuLh983tCKj5moXkxI");
+        if (generated_signature == razorpay_signature) {
+            const data = new PayStats({ user: req.user._id, razorpay_payment_id, razorpay_order_id, razorpay_signature })
+            await data.save();
+            res.json({ message: "payment is successful " })
+        } else {
+            res.json({ message: "Payment Failed!" })
+        }
 
     } catch (error) {
         res.json(error)
@@ -99,4 +107,4 @@ const getMemberShipDetails = async (req, res) => {
 
 
 
-module.exports = { getProducts, membership, membershipVerification, getMemberShipDetails };
+module.exports = { getProducts, membership, membershipVerification, verifyPayment };

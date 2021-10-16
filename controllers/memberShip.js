@@ -31,7 +31,7 @@ const membership = (req, res) => {
     })
 }
 
-const membershipVerification = async (req, res) => {
+const membershipVerification = (req, res) => {
     //do validation
 
     const SECERT = process.env.RZP_SECRET;

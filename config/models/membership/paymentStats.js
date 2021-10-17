@@ -7,11 +7,17 @@ const paymentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
+    userEmail : {
+        type : String
+    },
+    userPhone : {
+        type : Number
+    },
     razorpay_payment_id: {
         type: String,
     },
     razorpay_order_id: {
-        type: Number,
+        type: String,
     },
     razorpay_signature: {
         type: String,

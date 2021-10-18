@@ -118,11 +118,11 @@ const verifyPayment = async (req, res) => {
 
 
 const addMembers = async (req, res) => {
-    const { name, birthData, gender, email, phone, wpNumber, year, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode } = req.body;
+    const { fName, mName , lName , birthData, gender, email, phone, wpNumber, year, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode } = req.body;
 
     try {
 
-        // if (!name || !birthData || !gender || !wpNumber || !phone || !email || !year || !autonomyRoll || !collegeRoll || !attendAnyEvent || !feedback || !image || !address || !city || !state || !postalCode) {
+        // if (!fName || !lName || !birthData || !gender || !wpNumber || !phone || !email || !year || !autonomyRoll || !collegeRoll || !attendAnyEvent || !feedback || !image || !address || !city || !state || !postalCode) {
         //     res.status(422).json({ error: "Please fill all fields provided!" })
         // } else {
             const isMember = await MemberShip.findOne({ email: email });
@@ -131,12 +131,12 @@ const addMembers = async (req, res) => {
                 const amount = isMember.paymentAmount;
                 if (amount === 40000) {
                     const duration = 4;
-                    const member = new Members({ name, birthData, gender, email, phone, wpNumber, year, duration, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode, isMember: true, user: req.user._id });
+                    const member = new Members({ fName, mName , lName, birthData, gender, email, phone, wpNumber, year, duration, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode, isMember: true, user: req.user._id });
                     await member.save();
                     res.status(201).json({ message: "Membership activated!" })
                 } else {
                     const duration = 1;
-                    const member = new Members({ name: req.user.name, birthData, gender, email: req.user.email, phone: req.user.phone, wpNumber, year, duration, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode, isMember: true, user: req.user._id });
+                    const member = new Members({ fName, mName , lName: req.user.name, birthData, gender, email: req.user.email, phone: req.user.phone, wpNumber, year, duration, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode, isMember: true, user: req.user._id });
                     await member.save();
                     res.status(201).json({ message: "Membership activated!" })
                 }

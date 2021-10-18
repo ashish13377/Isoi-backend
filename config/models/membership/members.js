@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 
 const memberSchema = new mongoose.Schema({
-    name: {
+    fName: {
+        type: String
+    },
+    mName: {
+        type: String
+    },
+    lName: {
         type: String
     },
     birthData: {

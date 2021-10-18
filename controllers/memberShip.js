@@ -3,9 +3,10 @@ const Razorpay = require("razorpay")
 const shortid = require("shortid");
 const crypto = require("crypto")
 const hmac_sha256 = require("crypto-js/hmac-sha256");
-
-const MemberShip = require("../config/models/membership/membership.js")
+const Payments = require("../config/models/membership/membership.js")
 const PayStats = require("../config/models/membership/paymentStats")
+
+
 
 const razorpay = new Razorpay({
     key_id: process.env.RZP_KEY,
@@ -63,7 +64,7 @@ const membershipVerification = async (req, res) => {
                 const upi_transaction_id = stats.payload.payment.entity.acquirer_data.upi_transaction_id
                 const upiNetwork = stats.payload.payment.entity.vpa
 
-                const paymentStatement = new MemberShip({
+                const paymentStatement = new Payments({
                     account_id, event, paymentId, paymentAmount, status, orderId, email, createdAt, method, upiNetwork, upi_transaction_id
                 })
                 await paymentStatement.save();
@@ -72,7 +73,7 @@ const membershipVerification = async (req, res) => {
                 const card_id = stats.payload.payment.entity.card_id
                 const cardNetwork = stats.payload.payment.entity.card.network;
 
-                const paymentStatement = new MemberShip({
+                const paymentStatement = new Payments({
                     account_id, event, paymentId, paymentAmount, status, orderId, email, createdAt, method, card_id, cardNetwork
                 })
                 await paymentStatement.save();

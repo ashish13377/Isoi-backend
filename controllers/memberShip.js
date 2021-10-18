@@ -3,10 +3,9 @@ const Razorpay = require("razorpay")
 const shortid = require("shortid");
 const crypto = require("crypto")
 const hmac_sha256 = require("crypto-js/hmac-sha256");
-const Payments = require("../config/models/membership/membership.js")
+const MemberShip = require("../config/models/membership/membership.js")
 const PayStats = require("../config/models/membership/paymentStats")
-
-
+const Members = require("../config/models/membership/members.js")
 
 const razorpay = new Razorpay({
     key_id: process.env.RZP_KEY,
@@ -64,7 +63,7 @@ const membershipVerification = async (req, res) => {
                 const upi_transaction_id = stats.payload.payment.entity.acquirer_data.upi_transaction_id
                 const upiNetwork = stats.payload.payment.entity.vpa
 
-                const paymentStatement = new Payments({
+                const paymentStatement = new MemberShip({
                     account_id, event, paymentId, paymentAmount, status, orderId, email, createdAt, method, upiNetwork, upi_transaction_id
                 })
                 await paymentStatement.save();
@@ -73,7 +72,7 @@ const membershipVerification = async (req, res) => {
                 const card_id = stats.payload.payment.entity.card_id
                 const cardNetwork = stats.payload.payment.entity.card.network;
 
-                const paymentStatement = new Payments({
+                const paymentStatement = new MemberShip({
                     account_id, event, paymentId, paymentAmount, status, orderId, email, createdAt, method, card_id, cardNetwork
                 })
                 await paymentStatement.save();
@@ -104,7 +103,7 @@ const verifyPayment = async (req, res) => {
 
         const generated_signature = hmac_sha256(razorpay_order_id + "|" + razorpay_payment_id, key_secret).toString();
         if (generated_signature === razorpay_signature) {
-            const data = new PayStats({ user: req.user._id, userEmail : req.user.email , userPhone : req.user.phone, razorpay_payment_id, razorpay_order_id, razorpay_signature })
+            const data = new PayStats({ user: req.user._id, userEmail: req.user.email, userPhone: req.user.phone, razorpay_payment_id, razorpay_order_id, razorpay_signature })
             await data.save();
             res.status(200).json({ message: "Payment received is from an authentic source." })
         } else {
@@ -118,5 +117,51 @@ const verifyPayment = async (req, res) => {
 }
 
 
+const addMembers = async (req, res) => {
+    const { name, birthData, gender, email, phone, wpNumber, year, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode } = req.body;
 
-module.exports = { getProducts, membership, membershipVerification, verifyPayment };
+    try {
+
+        // if (!name || !birthData || !gender || !wpNumber || !phone || !email || !year || !autonomyRoll || !collegeRoll || !attendAnyEvent || !feedback || !image || !address || !city || !state || !postalCode) {
+        //     res.status(422).json({ error: "Please fill all fields provided!" })
+        // } else {
+            const isMember = await MemberShip.findOne({ email: email });
+            // const isCapture = isMember.status;
+            if (isMember && isMember.status === "captured") {
+                const amount = isMember.paymentAmount;
+                if (amount === 40000) {
+                    const duration = 4;
+                    const member = new Members({ name, birthData, gender, email, phone, wpNumber, year, duration, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode, isMember: true, user: req.user._id });
+                    await member.save();
+                    res.status(201).json({ message: "Membership activated!" })
+                } else {
+                    const duration = 1;
+                    const member = new Members({ name: req.user.name, birthData, gender, email: req.user.email, phone: req.user.phone, wpNumber, year, duration, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode, isMember: true, user: req.user._id });
+                    await member.save();
+                    res.status(201).json({ message: "Membership activated!" })
+                }
+
+            } else {
+                res.status(400).json({ error: "First get your membership!" })
+            }
+
+        // }
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+
+const getMember = async (req, res) => {
+    const isMember = await Members.findOne({ user: req.user._id });
+    if (isMember) {
+        res.status(200).json(isMember);
+    } else {
+        res.status(400).json({ error: "Not member" })
+    }
+}
+
+
+
+module.exports = { getProducts, membership, membershipVerification, verifyPayment, addMembers, getMember };

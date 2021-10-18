@@ -51,6 +51,6 @@ const memberShipSchema = new mongoose.Schema({
 
 
 
-const Payments = mongoose.model("MemberShip", memberShipSchema);
+const MemberShip = mongoose.model("MemberShip", memberShipSchema);
 
-module.exports = Payments;
+module.exports = MemberShip;

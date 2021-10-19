@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
 const User = require("../config/models/user.js");
 const bcrypt = require("bcrypt")
+const FreeEvent = require("../config/models/admin/freeEvent.js")
+const MemberShipEvent = require("../config/models/admin/membershipEvent")
+const FreeEventsRegistrations = require("../config/models/freeEventsRegistrations.js");
+const PaidEventsRegistrations = require("../config/models/paidEventsRegistration.js");
 
 
 const registerUser = async (req, res) => {
@@ -64,5 +68,71 @@ const loginUser = async (req, res) => {
 
 }
 
+const FreeEventRegistration = async (req, res) => {
+    try {
+        const { fname, mname, lname, phone, wpNumber, department } = req.body;
 
-module.exports = { registerUser, loginUser };
+        FreeEvent.findByIdAndUpdate(req.params.id, {
+            $push: { attende: req.user._id }
+        }, {
+            new: true
+        }).exec((err , res) => {
+            if(err){
+                console.log(err);
+            }else{
+                console.log("ok");
+            }
+        })
+
+        const details = new FreeEventsRegistrations({ fname, mname, lname, email : req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id })
+
+        if (await details.save()) {
+            res.status(201).json({ message: "Register successfully!" })
+        } else {
+            res.status(401).json({ error: "Something went wrong!" })
+
+        }
+
+
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+const paidEventRegistration = async (req, res) => {
+    try {
+        const { fname, mname, lname, phone, wpNumber, department } = req.body;
+
+        MemberShipEvent.findByIdAndUpdate(req.params.id, {
+            $push: { attende: req.user._id }
+        }, {
+            new: true
+        }).exec((err , res) => {
+            if(err){
+                console.log(err);
+            }else{
+                console.log("ok");
+            }
+        })
+        
+
+        const details = new PaidEventsRegistrations({ fname, mname, lname, email : req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id })
+
+        if (await details.save()) {
+            res.status(201).json({ message: "Register successfully!" })
+        } else {
+            res.status(401).json({ error: "Something went wrong!" })
+
+        }
+
+
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+
+module.exports = { registerUser, loginUser, FreeEventRegistration , paidEventRegistration };

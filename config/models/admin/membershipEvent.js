@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { ObjectId } = mongoose.Schema.Types
 
 const membershipSchema = new mongoose.Schema({
     eventName: {
@@ -42,9 +42,7 @@ const membershipSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    participants: {
-        participant: []
-    }
+    attende: [{ type: ObjectId, ref: "User" }]
 }, { timestamps: true })
 
 

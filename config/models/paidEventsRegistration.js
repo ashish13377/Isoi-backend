@@ -35,7 +35,7 @@ const paidEventsRegistration = new mongoose.Schema({
         type: String
     },
     eventDate : {
-        type: Number
+        type: String
     }
 }, { timestamps: true })
 

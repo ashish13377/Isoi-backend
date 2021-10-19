@@ -71,6 +71,7 @@ const loginUser = async (req, res) => {
 const FreeEventRegistration = async (req, res) => {
     try {
         const { fname, mname, lname, phone, wpNumber, department , eventName , eventDate } = req.body;
+        console.log(eventDate);
 
         FreeEvent.findByIdAndUpdate(req.params.id, {
             $push: { attende: req.user._id }
@@ -95,7 +96,8 @@ const FreeEventRegistration = async (req, res) => {
             <h5>Greetings from ISOI-student chapter,HITK. </h5>
             <p>
             Thank You for successfully registering for the Event. <br>
-
+            <p> Event Name : ${eventName} <br>
+                Event Date : ${eventDate} <br>
             <br>
             <p>We are looking forward for your presence.</p>
 

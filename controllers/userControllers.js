@@ -224,4 +224,14 @@ const paidEventRegistration = async (req, res) => {
 }
 
 
-module.exports = { registerUser, loginUser, FreeEventRegistration, paidEventRegistration };
+const getmyfreeevents = async(req,res) => {
+    const eventfree = await FreeEventsRegistrations.find({user : req.user._id});
+    res.status(200).json(eventfree)
+}
+const getmypaidevents = async(req,res) => {
+    const eventpaid = await PaidEventsRegistrations.find({user : req.user._id});
+    res.status(200).json(eventpaid)
+}
+
+
+module.exports = { registerUser, loginUser, FreeEventRegistration, paidEventRegistration , getmyfreeevents , getmypaidevents};

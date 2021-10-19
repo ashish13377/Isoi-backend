@@ -68,7 +68,9 @@ const membershipVerification = async (req, res) => {
                 <p>CONGRATULATIONS! <br>
                 Your payment was SUCCESSFUL.We have successfully received your payment for the membership of the ISOI-student chapter. <br>
                 Your  paymentId - ${paymentId}, orderId - ${orderId} for the amount of  Rs. ${paymentAmount}. You will recieve an email of membership confirmation soon. once you fill the membership registration form. <br>
-                
+                <br>
+                <br>
+
                 best wishes, <br>
                 Team-ISOI-student chapter,HITK.</p>
            `
@@ -209,13 +211,15 @@ const addMembers = async (req, res) => {
             <p>CONGRATULATIONS! <br>
             Thank You for successfully registering with us. You have now become a Member of ISOI-student chapter. We will keep you updated about all the events and related news. <br>
             We are looking forward for your contribution towards the instrumentation society.Keep an eye on our official website for more informations on upcoming events.<br>
+            <br>
+                <br>
             best wishes, <br>
             Team-ISOI-student chapter,HITK.</p>
        `
 
-            if (amount === 40000) {
+            if (amount === 400) {
                 const duration = 4;
-                const member = new Members({ fName, mName, lName, birthData, gender, email : req.user.email, phone, wpNumber, year, duration, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode, isMember: true, user: req.user._id });
+                const member = new Members({ fName, mName, lName, birthData, gender, email: req.user.email, phone, wpNumber, year, duration, autonomyRoll, collegeRoll, attendAnyEvent, feedback, image, address, city, state, postalCode, isMember: true, user: req.user._id });
                 await member.save();
                 res.status(201).json({ message: "Membership activated!" })
             } else {
@@ -233,15 +237,15 @@ const addMembers = async (req, res) => {
                     pass: "sulrsngrrqkfyppm", // generated ethereal password
                 },
             });
-    
+
             let mailOption = {
                 from: 'projectsmail1504@gmail.com', // sender address
                 to: req.user.email, // list of receivers
-                subject: "ISOI-HITK Newsletter", // Subject line
-                text: "ISOI-HITK Newsletter", // plain text body
+                subject: "ISOI-HITK Membership", // Subject line
+                text: "ISOI-HITK Membership", // plain text body
                 html: output, // html body
             }
-    
+
             // send mail with defined transport object
             transporter.sendMail(mailOption, (error, info) => {
                 if (error) {
@@ -280,7 +284,8 @@ const sendMail = async (req, res) => {
             Thank You for subscribing  the newsletter of ISOI-student chapter. You will recieve the copy of our newsletter straight in your inbox.<br>
             You can also check out the official website for past
             and future issues. By subscribing our newsletter, you will always remain updated about the latest events of ISOI.  <br>
-            
+            <br>
+                <br>
             best wishes, <br>
             Team-ISOI-student chapter,HITK.</p>
        `

@@ -5,7 +5,7 @@ const FreeEvent = require("../config/models/admin/freeEvent.js")
 const MemberShipEvent = require("../config/models/admin/membershipEvent")
 const FreeEventsRegistrations = require("../config/models/freeEventsRegistrations.js");
 const PaidEventsRegistrations = require("../config/models/paidEventsRegistration.js");
-
+const nodemailer = require("nodemailer");
 
 const registerUser = async (req, res) => {
     const picture = (req.file) ? req.file.filename : null;
@@ -76,18 +76,64 @@ const FreeEventRegistration = async (req, res) => {
             $push: { attende: req.user._id }
         }, {
             new: true
-        }).exec((err , res) => {
-            if(err){
+        }).exec((err, res) => {
+            if (err) {
                 console.log(err);
-            }else{
+            } else {
                 console.log("ok");
             }
         })
 
-        const details = new FreeEventsRegistrations({ fname, mname, lname, email : req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id })
+
+
+        const details = new FreeEventsRegistrations({ fname, mname, lname, email: req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id })
 
         if (await details.save()) {
+
+            const output = `
+            <h4> Dear student </h4>
+            <h5>Greetings from ISOI-student chapter,HITK. </h5>
+            <p>
+            Thank You for successfully registering for the Event. <br>
+
+            <br>
+            <p>We are looking forward for your presence.</p>
+
+            <br>
+            <br>
+            best wishes, <br>
+            Team-ISOI-student chapter,HITK.</p>
+       `
+            let transporter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                    user: "projectsmail1504@gmail.com", // generated ethereal user
+                    pass: "sulrsngrrqkfyppm", // generated ethereal password
+                },
+            });
+
+            let mailOption = {
+                from: 'projectsmail1504@gmail.com', // sender address
+                to: req.user.email, // list of receivers
+                subject: "ISOI-HITK Event Registration", // Subject line
+                text: "ISOI-HITK Event Registration", // plain text body
+                html: output, // html body
+            }
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOption, (error, info) => {
+                if (error) {
+                    res.json(error)
+                } else {
+                    const data = info.messageId;
+                    res.json({ message: "Email sent", data })
+                }
+            });
+
             res.status(201).json({ message: "Register successfully!" })
+
         } else {
             res.status(401).json({ error: "Something went wrong!" })
 
@@ -108,18 +154,61 @@ const paidEventRegistration = async (req, res) => {
             $push: { attende: req.user._id }
         }, {
             new: true
-        }).exec((err , res) => {
-            if(err){
+        }).exec((err, res) => {
+            if (err) {
                 console.log(err);
-            }else{
+            } else {
                 console.log("ok");
             }
         })
-        
 
-        const details = new PaidEventsRegistrations({ fname, mname, lname, email : req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id })
+
+        const details = new PaidEventsRegistrations({ fname, mname, lname, email: req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id })
 
         if (await details.save()) {
+
+            const output = `
+            <h4> Dear student </h4>
+            <h5>Greetings from ISOI-student chapter,HITK. </h5>
+            <p>
+            Thank You for successfully registering for the Event. <br>
+
+            <br>
+            <p>We are looking forward for your presence.</p>
+
+            <br>
+            <br>
+            best wishes, <br>
+            Team-ISOI-student chapter,HITK.</p>
+       `
+            let transporter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                    user: "projectsmail1504@gmail.com", // generated ethereal user
+                    pass: "sulrsngrrqkfyppm", // generated ethereal password
+                },
+            });
+
+            let mailOption = {
+                from: 'projectsmail1504@gmail.com', // sender address
+                to: req.user.email, // list of receivers
+                subject: "ISOI-HITK Event Registration", // Subject line
+                text: "ISOI-HITK Event Registration", // plain text body
+                html: output, // html body
+            }
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOption, (error, info) => {
+                if (error) {
+                    res.json(error)
+                } else {
+                    const data = info.messageId;
+                    res.json({ message: "Email sent", data })
+                }
+            });
+
             res.status(201).json({ message: "Register successfully!" })
         } else {
             res.status(401).json({ error: "Something went wrong!" })
@@ -135,4 +224,4 @@ const paidEventRegistration = async (req, res) => {
 }
 
 
-module.exports = { registerUser, loginUser, FreeEventRegistration , paidEventRegistration };
+module.exports = { registerUser, loginUser, FreeEventRegistration, paidEventRegistration };

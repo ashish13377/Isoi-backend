@@ -224,11 +224,8 @@ const addMembers = async (req, res) => {
 
 const getMember = async (req, res) => {
     const isMember = await Members.findOne({ user: req.user._id });
-    if (isMember) {
         res.status(200).json(isMember);
-    } else {
-        res.status(400).json({ error: "Not member" })
-    }
+    
 }
 
 

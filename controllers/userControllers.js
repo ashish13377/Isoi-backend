@@ -70,7 +70,7 @@ const loginUser = async (req, res) => {
 
 const FreeEventRegistration = async (req, res) => {
     try {
-        const { fname, mname, lname, phone, wpNumber, department } = req.body;
+        const { fname, mname, lname, phone, wpNumber, department , eventName , eventDate } = req.body;
 
         FreeEvent.findByIdAndUpdate(req.params.id, {
             $push: { attende: req.user._id }
@@ -86,7 +86,7 @@ const FreeEventRegistration = async (req, res) => {
 
 
 
-        const details = new FreeEventsRegistrations({ fname, mname, lname, email: req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id })
+        const details = new FreeEventsRegistrations({ fname, mname, lname, email: req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id , eventName , eventDate })
 
         if (await details.save()) {
 
@@ -148,7 +148,7 @@ const FreeEventRegistration = async (req, res) => {
 }
 const paidEventRegistration = async (req, res) => {
     try {
-        const { fname, mname, lname, phone, wpNumber, department } = req.body;
+        const { fname, mname, lname, phone, wpNumber, department , eventDate , eventName } = req.body;
 
         MemberShipEvent.findByIdAndUpdate(req.params.id, {
             $push: { attende: req.user._id }
@@ -163,7 +163,7 @@ const paidEventRegistration = async (req, res) => {
         })
 
 
-        const details = new PaidEventsRegistrations({ fname, mname, lname, email: req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id })
+        const details = new PaidEventsRegistrations({ fname, mname, lname, email: req.user.email, phone, wpNumber, department, user: req.user._id, eventId: req.params.id ,  eventDate , eventName })
 
         if (await details.save()) {
 

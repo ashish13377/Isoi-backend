@@ -30,6 +30,13 @@ const paidEventsRegistration = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "FreeEvent"
     }
+    ,
+    eventName : {
+        type: String
+    },
+    eventDate : {
+        type: Number
+    }
 }, { timestamps: true })
 
 const PaidEventsRegistrations = mongoose.model("PaidEventsRegistrations" , paidEventsRegistration);

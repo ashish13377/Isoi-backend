@@ -29,6 +29,12 @@ const eventsRegistrationSchema = new mongoose.Schema({
     eventId : {
         type: mongoose.Schema.Types.ObjectId,
         ref: "FreeEvent"
+    },
+    eventName : {
+        type: String
+    },
+    eventDate : {
+        type: Number
     }
 }, { timestamps: true })
 

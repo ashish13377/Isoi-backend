@@ -10,6 +10,7 @@ router.route("/membershipVerification").post(membershipVerification)
 router.route("/verify-payment").post(isUser , verifyPayment)
 router.route("/addmembers").post(isUser , addMembers)
 router.route("/getmember").get(isUser , getMember)
-router.route("/sendmail").post(isUser , sendMail )
+router.route("/sendmail").post(sendMail )
+
 
 module.exports = router;

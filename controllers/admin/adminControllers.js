@@ -5,6 +5,7 @@ const FreeEvent = require("../../config/models/admin/freeEvent.js")
 const bcrypt = require("bcrypt")
 const FreeEventsRegistrations = require("../../config/models/freeEventsRegistrations.js");
 const PaidEventsRegistrations = require("../../config/models/paidEventsRegistration.js");
+const Members = require("../../config/models/membership/members.js")
 
 const registerUser = async (req, res) => {
     const { name, username, password } = req.body;
@@ -146,4 +147,9 @@ const getPaidEventMemberDetails = async (req,res) => {
     res.status(200).json(mEvent);
 }
 
-module.exports = { registerUser, loginUser, membershipEvent, freeEvent, getFreeEvents, getMembershipEvents , getFreeEvenetsById , getMemberShipEvenetsById , getFreeEventMemberDetails , getPaidEventMemberDetails };
+const getAllMembers = async (req,res) => {
+    const details = await Members.find();
+    res.status(200).json(details);
+}
+
+module.exports = { registerUser, loginUser, membershipEvent, freeEvent, getFreeEvents, getMembershipEvents , getFreeEvenetsById , getMemberShipEvenetsById , getFreeEventMemberDetails , getPaidEventMemberDetails , getAllMembers };
